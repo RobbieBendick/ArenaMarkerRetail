@@ -100,6 +100,28 @@ function Config:CreateMenu()
 	UIConfig = CreateFrame("Frame", "ArenaMarkerConfig", UIParent, "BasicFrameTemplateWithInset");
 	UIConfig:SetSize(180, 325);
 	UIConfig:SetPoint("CENTER", 150, 50);
+	
+	-- Make Menu Movable
+	UIConfig:SetMovable(true);
+	UIConfig:EnableMouse(true);
+	UIConfig:SetScript("OnMouseDown", function(self, button)
+		if button == "LeftButton" and not self.isMoving then
+			self:StartMoving();
+			self.isMoving = true;
+		end
+	end)
+	UIConfig:SetScript("OnMouseUp", function(self, button)
+		if button == "LeftButton" and self.isMoving then
+			self:StopMovingOrSizing();
+			self.isMoving = false;
+		end
+	end)
+	UIConfig:SetScript("OnHide", function(self)
+		if self.isMoving then
+			self:StopMovingOrSizing();
+			self.isMoving = false;
+		end
+	end)
 
 	UIConfig.CloseButton:SetScript("OnClick", function ()
 		ArenaMarkerConfig:Hide()
@@ -118,8 +140,8 @@ function Config:CreateMenu()
 	UIConfig.markPetsCheckButton:ClearAllPoints();
 	UIConfig.markPetsCheckButton:SetPoint("CENTER", UIConfig.TitleBg, "CENTER", -15, -40);
 	UIConfig.markPetsCheckButton.text:SetText("  Mark Pets\n (when arena\n gates open)");
-	UIConfig.markPetsCheckButton:SetChecked(ArenaMarkerDB.allowPets);
     UIConfig.markPetsCheckButton.text:SetFontObject("GameFontHighlight");
+	UIConfig.markPetsCheckButton:SetChecked(ArenaMarkerDB.allowPets);
 	UIConfig.markPetsCheckButton:SetScript("OnClick", function() ArenaMarkerDB.allowPets = UIConfig.markPetsCheckButton:GetChecked() end);
 
 	-- Mark Players Button
@@ -164,18 +186,14 @@ function Config:CreateMenu()
 		AddMark("none", false)
 	end
 	UIConfig.dropDownTitle = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-	UIConfig.dropDownTitle:SetText("Prioritized Pet Mark")
-	UIConfig.dropDownTitle:SetPoint("CENTER", UIConfig.dropDown, 153, -56)
-	UIConfig.dropDown = CreateFrame("Frame", "ArenaMarkerDropDown", UIParent, "UIDropDownMenuTemplate")
-	UIConfig.dropDown:SetPoint("CENTER", UIConfig.dropDownTitle, 0, -27)
+	UIConfig.dropDownTitle:SetText("Prioritized Pet Mark");
+	UIConfig.dropDownTitle:SetPoint("CENTER", UIConfig.unmarkPetsButton, 0, -32);
+	UIConfig.dropDown = CreateFrame("Frame", "ArenaMarkerDropDown", UIParent, "UIDropDownMenuTemplate");
+	UIConfig.dropDown:SetPoint("CENTER", UIConfig.dropDownTitle, 0, -23);
 
-	function setDropdownText(arg1)
-		return UIDropDownMenu_SetText(UIConfig.dropDown, arg1)
-	end
-
-	function setDropdownCheck(arg1)
-		return UIDropDownMenu_SetSelectedID(UIConfig.dropDown, arg1)
-	end
+	function setDropdownText(v) return UIDropDownMenu_SetText(UIConfig.dropDown, v) end
+	function setDropdownCheck(v) return UIDropDownMenu_SetSelectedID(UIConfig.dropDown, v) end
+	
 	UIDropDownMenu_SetWidth(UIConfig.dropDown, 93)
 	UIDropDownMenu_Initialize(UIConfig.dropDown, ArenaMarkerDropDownMenu)
 	UIDropDownMenu_SetSelectedID(UIConfig.dropDown, ArenaMarkerDB.petDropDownClickID)
