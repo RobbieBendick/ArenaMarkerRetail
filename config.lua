@@ -40,6 +40,7 @@ core.marker_strings = {
 	"cross",
 	"skull"
 }
+core.texture_path = "Interface\\TargetingFrame\\UI-RaidTargetingIcon_";
 --------------------------------------
 -- Config functions
 --------------------------------------
@@ -183,21 +184,20 @@ function Config:CreateMenu()
 		local function AddMark(marker, boolean, i)
 			info.text, info.checked = marker, boolean
 			if i ~= nil then
-				local texturePath = [[Interface\TargetingFrame\UI-RaidTargetingIcon_]];
-				info.icon = texturePath..i;
+				info.icon = core.texture_path..i;
 			else
 				info.icon = nil;
 			end
-			return UIDropDownMenu_AddButton(info)
+			return UIDropDownMenu_AddButton(info);
 		end
 		for i=#core.marker_strings,1,-1 do
-			AddMark(core.marker_strings[i], false, i)
+			AddMark(core.marker_strings[i], false, i);
 		end
-		AddMark("none", false, nil)
+		AddMark("none", false, nil);
 	end
 	function setDropdownText(v) return UIDropDownMenu_SetText(UIConfig.dropDown, v) end
 	function setDropdownCheck(v) return UIDropDownMenu_SetSelectedID(UIConfig.dropDown, v) end
-	function setDropdownIcon(j) if j == -1 then UIConfig.dropDownIcon:SetTexture(nil) return end return UIConfig.dropDownIcon:SetTexture("Interface\\TargetingFrame\\UI-RaidTargetingIcon_"..j) end
+	function setDropdownIcon(j) if j == -1 then UIConfig.dropDownIcon:SetTexture(nil) return end return UIConfig.dropDownIcon:SetTexture(core.texture_path..j) end
 
 	UIConfig.dropDownTitle = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
 	UIConfig.dropDownTitle:SetText("Prioritized Pet Mark");
@@ -248,7 +248,7 @@ local function login()
 		ArenaMarkerDB["petDropDownMarkerID"] = -1;
 		ArenaMarkerDB["petDropDownClickID"] = -1;
 	end
-	DEFAULT_CHAT_FRAME:AddMessage("|cff33ff99ArenaMarker|r: /am for additional options.");
+	DEFAULT_CHAT_FRAME:AddMessage("|cff33ff99ArenaMarker|r by |cff69CCF0Mageiden|r. Type |cff33ff99/am|r for additional options.");
 end
 
 enterWorld = CreateFrame("FRAME");
