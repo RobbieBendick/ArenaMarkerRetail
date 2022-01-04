@@ -135,7 +135,7 @@ function Config:CreateMenu()
 	UIConfig.title:ClearAllPoints();
     UIConfig.title:SetFontObject("GameFontHighlight");
 	UIConfig.title:SetPoint("LEFT", UIConfig.TitleBg, "LEFT", 5, 0);
-	UIConfig.title:SetText("ArenaMarker Options");
+	UIConfig.title:SetText("|cff33ff99ArenaMarker|r Options");
 
 	-- Check Button
 	UIConfig.markPetsCheckButton = CreateFrame("CheckButton", nil, UIConfig, "UICheckButtonTemplate");
@@ -197,7 +197,7 @@ function Config:CreateMenu()
 	end
 	function setDropdownText(v) return UIDropDownMenu_SetText(UIConfig.dropDown, v) end
 	function setDropdownCheck(v) return UIDropDownMenu_SetSelectedID(UIConfig.dropDown, v) end
-	function setDropdownIcon(j) if j == -1 then UIConfig.dropDownIcon:SetTexture(nil) return end return UIConfig.dropDownIcon:SetTexture(core.texture_path..j) end
+	function setDropdownIcon(j) if j == -1 then return UIConfig.dropDownIcon:SetTexture(nil) end return UIConfig.dropDownIcon:SetTexture(core.texture_path..j) end
 
 	UIConfig.dropDownTitle = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
 	UIConfig.dropDownTitle:SetText("Prioritized Pet Mark");
@@ -206,8 +206,7 @@ function Config:CreateMenu()
 	UIConfig.dropDown:SetPoint("CENTER", UIConfig.dropDownTitle, 0, -23);
 	UIConfig.dropDownIcon = UIConfig:CreateTexture("ArenaMarkerIcon", "MEDIUM", nil, 2);
 	UIConfig.dropDownIcon:SetPoint("LEFT", UIConfig.dropDown, 25, 2);
-	UIConfig.dropDownIcon:SetWidth(16);
-	UIConfig.dropDownIcon:SetHeight(16);
+	UIConfig.dropDownIcon:SetSize(16,16);
 	
 	UIDropDownMenu_SetWidth(UIConfig.dropDown, 93);
 	UIDropDownMenu_Initialize(UIConfig.dropDown, ArenaMarkerDropDownMenu);
