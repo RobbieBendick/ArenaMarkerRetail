@@ -103,6 +103,27 @@ function Config:CreateButton(relativeFrame, buttonText, funcName)
 	return btn
 end
 
+function Config:CreateDropTitle(relativeFrame, dropText)
+	local dropTitle = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
+	dropTitle:SetText(dropText);
+	dropTitle:SetPoint("CENTER", relativeFrame, 0, -32);
+	return dropTitle;
+end
+
+function Config:CreateDropIcon(relativeFrame, textureName)
+	local dropIcon = UIConfig:CreateTexture(textureName, "MEDIUM", nil, 2);
+	dropIcon:SetPoint("LEFT", relativeFrame, 25, 2);
+	dropIcon:SetSize(16,16);
+	return dropIcon;
+end
+
+function Config:InitDropdown(dropdown, menu, clickID, markerID, funcName)
+	UIDropDownMenu_SetWidth(dropdown, 93);
+	UIDropDownMenu_Initialize(dropdown, menu);
+	UIDropDownMenu_SetSelectedID(dropdown, clickID);
+	funcName(markerID);
+end
+
 function Config:CreateMenu()
 	-- Menu
 	UIConfig = CreateFrame("Frame", "ArenaMarkerConfig", UIParent, "BasicFrameTemplateWithInset");
@@ -188,8 +209,8 @@ function Config:CreateMenu()
 				j = j + 1;
 			end
 		end
-		setDropdownText(self.value);
-		setDropdownCheck(self:GetID());
+		setDropdownText(UIConfig.dropDown, self.value);
+		setDropdownCheck(UIConfig.dropDown, self:GetID());
 		setDropdownIcon(j);
 	end
 	   function ArenaMarkerDropDownMenu(frame, level, menuList)
@@ -215,23 +236,16 @@ function Config:CreateMenu()
 		end
 		AddMark("none", false, nil);
 	end
-	function setDropdownText(v) return UIDropDownMenu_SetText(UIConfig.dropDown, v) end
-	function setDropdownCheck(v) return UIDropDownMenu_SetSelectedID(UIConfig.dropDown, v) end
+	function setDropdownText(dropdown, v) return UIDropDownMenu_SetText(dropdown, v) end
+	function setDropdownCheck(dropdown, v) return UIDropDownMenu_SetSelectedID(dropdown, v) end
 	function setDropdownIcon(j) if j == -1 then return UIConfig.dropDownIcon:SetTexture(nil) end return UIConfig.dropDownIcon:SetTexture(core.texture_path..j) end
+	function setDropdownIconTwo(j) if j == -1 then return UIConfig.dropDownIconTwo:SetTexture(nil) end return UIConfig.dropDownIconTwo:SetTexture(core.texture_path..j) end
+	function setDropdownIconThree(j) if j == -1 then return UIConfig.dropDownIconThree:SetTexture(nil) end return UIConfig.dropDownIconThree:SetTexture(core.texture_path..j) end
 
-	UIConfig.dropDownTitle = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-	UIConfig.dropDownTitle:SetText("Self-Pet Mark");
-	UIConfig.dropDownTitle:SetPoint("CENTER", UIConfig.unmarkPetsButton, 0, -32);
+	UIConfig.dropDownTitle = self:CreateDropTitle(UIConfig.unmarkPetsButton, "Self-Pet Mark")
 	UIConfig.dropDown = CreateFrame("Frame", "ArenaMarkerDropDown", UIParent, "UIDropDownMenuTemplate");
 	UIConfig.dropDown:SetPoint("CENTER", UIConfig.dropDownTitle, 0, -23);
-	UIConfig.dropDownIcon = UIConfig:CreateTexture("ArenaMarkerIcon", "MEDIUM", nil, 2);
-	UIConfig.dropDownIcon:SetPoint("LEFT", UIConfig.dropDown, 25, 2);
-	UIConfig.dropDownIcon:SetSize(16,16);
-	
-	UIDropDownMenu_SetWidth(UIConfig.dropDown, 93);
-	UIDropDownMenu_Initialize(UIConfig.dropDown, ArenaMarkerDropDownMenu);
-	UIDropDownMenu_SetSelectedID(UIConfig.dropDown, ArenaMarkerDB.petDropDownClickID);
-	setDropdownIcon(ArenaMarkerDB.petDropDownMarkerID);
+	UIConfig.dropDownIcon = self:CreateDropIcon(UIConfig.dropDown, "ArenaMarkerIcon");
 
 	--Second Prio Pet
 	local function ArenaMarker_Pet_DropDown_Two_OnClick(self, arg1, arg2, checked)
@@ -257,8 +271,8 @@ function Config:CreateMenu()
 				j = j + 1;
 			end
 		end
-		setDropdownTextTwo(self.value);
-		setDropdownCheckTwo(self:GetID());
+		setDropdownText(UIConfig.dropDownTwo, self.value);
+		setDropdownCheck(UIConfig.dropDownTwo, self:GetID());
 		setDropdownIconTwo(j);
 	end
 	   function ArenaMarkerDropDownMenuTwo(frame, level, menuList)
@@ -285,23 +299,10 @@ function Config:CreateMenu()
 		AddMark("none", false, nil);
 	end
 
-	function setDropdownTextTwo(v) return UIDropDownMenu_SetText(UIConfig.dropDownTwo, v) end
-	function setDropdownCheckTwo(v) return UIDropDownMenu_SetSelectedID(UIConfig.dropDownTwo, v) end
-	function setDropdownIconTwo(j) if j == -1 then return UIConfig.dropDownIconTwo:SetTexture(nil) end return UIConfig.dropDownIconTwo:SetTexture(core.texture_path..j) end
-
-	UIConfig.dropDownTitleTwo = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-	UIConfig.dropDownTitleTwo:SetText("Party-Pet Mark");
-	UIConfig.dropDownTitleTwo:SetPoint("CENTER", UIConfig.dropDown, 0, -32);
+	UIConfig.dropDownTitleTwo = self:CreateDropTitle(UIConfig.dropDown, "Party-Pet Mark")
 	UIConfig.dropDownTwo = CreateFrame("Frame", "ArenaMarkerDropDownTwo", UIParent, "UIDropDownMenuTemplate");
 	UIConfig.dropDownTwo:SetPoint("CENTER", UIConfig.dropDownTitleTwo, 0, -23);
-	UIConfig.dropDownIconTwo = UIConfig:CreateTexture("ArenaMarkerIconTwo", "MEDIUM", nil, 2);
-	UIConfig.dropDownIconTwo:SetPoint("LEFT", UIConfig.dropDownTwo, 25, 2);
-	UIConfig.dropDownIconTwo:SetSize(16,16);
-
-	UIDropDownMenu_SetWidth(UIConfig.dropDownTwo, 93);
-	UIDropDownMenu_Initialize(UIConfig.dropDownTwo, ArenaMarkerDropDownMenuTwo);
-	UIDropDownMenu_SetSelectedID(UIConfig.dropDownTwo, ArenaMarkerDB.petDropDownTwoClickID);
-	setDropdownIconTwo(ArenaMarkerDB.petDropDownTwoMarkerID);
+	UIConfig.dropDownIconTwo = self:CreateDropIcon(UIConfig.dropDownTwo, "ArenaMarkerIconTwo");
 
 	--Third Prio Pet
 	local function ArenaMarker_Pet_DropDown_Three_OnClick(self, arg1, arg2, checked)
@@ -327,8 +328,8 @@ function Config:CreateMenu()
 				j = j + 1;
 			end
 		end
-		setDropdownTextThree(self.value);
-		setDropdownCheckThree(self:GetID());
+		setDropdownText(UIConfig.dropDownThree, self.value);
+		setDropdownCheck(UIConfig.dropDownThree, self:GetID());
 		setDropdownIconThree(j);
 	end
 	   function ArenaMarkerDropDownMenuThree(frame, level, menuList)
@@ -354,24 +355,13 @@ function Config:CreateMenu()
 		end
 		AddMark("none", false, nil);
 	end
-
-	function setDropdownTextThree(v) return UIDropDownMenu_SetText(UIConfig.dropDownThree, v) end
-	function setDropdownCheckThree(v) return UIDropDownMenu_SetSelectedID(UIConfig.dropDownThree, v) end
-	function setDropdownIconThree(j) if j == -1 then return UIConfig.dropDownIconThree:SetTexture(nil) end return UIConfig.dropDownIconThree:SetTexture(core.texture_path..j) end
-
-	UIConfig.dropDownTitleThree = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-	UIConfig.dropDownTitleThree:SetText("Extra Party-Pet Mark");
-	UIConfig.dropDownTitleThree:SetPoint("CENTER", UIConfig.dropDownTwo, 0, -32);
+	UIConfig.dropDownTitleThree = self:CreateDropTitle(UIConfig.dropDownTwo, "Extra Party-Pet Mark")
 	UIConfig.dropDownThree = CreateFrame("Frame", "ArenaMarkerDropDownThree", UIParent, "UIDropDownMenuTemplate");
 	UIConfig.dropDownThree:SetPoint("CENTER", UIConfig.dropDownTitleThree, 0, -23);
-	UIConfig.dropDownIconThree = UIConfig:CreateTexture("ArenaMarkerIconThree", "MEDIUM", nil, 2);
-	UIConfig.dropDownIconThree:SetPoint("LEFT", UIConfig.dropDownThree, 25, 2);
-	UIConfig.dropDownIconThree:SetSize(16,16);
-
-	UIDropDownMenu_SetWidth(UIConfig.dropDownThree, 93);
-	UIDropDownMenu_Initialize(UIConfig.dropDownThree, ArenaMarkerDropDownMenuThree);
-	UIDropDownMenu_SetSelectedID(UIConfig.dropDownThree, ArenaMarkerDB.petDropDownThreeClickID);
-	setDropdownIconThree(ArenaMarkerDB.petDropDownThreeMarkerID);
+	UIConfig.dropDownIconThree = self:CreateDropIcon(UIConfig.dropDownThree, "ArenaMarkerIconThree");
+	self:InitDropdown(UIConfig.dropDown, ArenaMarkerDropDownMenu, ArenaMarkerDB.petDropDownClickID, ArenaMarkerDB.petDropDownMarkerID, setDropdownIcon);
+	self:InitDropdown(UIConfig.dropDownTwo, ArenaMarkerDropDownMenuTwo, ArenaMarkerDB.petDropDownTwoClickID, ArenaMarkerDB.petDropDownTwoMarkerID, setDropdownIconTwo);
+	self:InitDropdown(UIConfig.dropDownThree, ArenaMarkerDropDownMenuThree, ArenaMarkerDB.petDropDownThreeClickID, ArenaMarkerDB.petDropDownThreeMarkerID, setDropdownIconThree);
 	
 	UIConfig:Hide();
 	return UIConfig;
