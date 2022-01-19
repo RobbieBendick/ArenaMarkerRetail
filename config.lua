@@ -206,6 +206,7 @@ function Config:CreateMenu()
 				info.icon = core.texture_path..i;
 			else
 				info.icon = nil;
+				info.disabled = false;
 			end
 			return UIDropDownMenu_AddButton(info);
 		end
@@ -274,6 +275,7 @@ function Config:CreateMenu()
 				info.icon = core.texture_path..i;
 			else
 				info.icon = nil;
+				info.disabled = false;
 			end
 			return UIDropDownMenu_AddButton(info);
 		end
@@ -295,7 +297,6 @@ function Config:CreateMenu()
 	UIConfig.dropDownIconTwo = UIConfig:CreateTexture("ArenaMarkerIconTwo", "MEDIUM", nil, 2);
 	UIConfig.dropDownIconTwo:SetPoint("LEFT", UIConfig.dropDownTwo, 25, 2);
 	UIConfig.dropDownIconTwo:SetSize(16,16);
-	
 
 	UIDropDownMenu_SetWidth(UIConfig.dropDownTwo, 93);
 	UIDropDownMenu_Initialize(UIConfig.dropDownTwo, ArenaMarkerDropDownMenuTwo);
@@ -344,6 +345,7 @@ function Config:CreateMenu()
 				info.icon = core.texture_path..i;
 			else
 				info.icon = nil;
+				info.disabled = false;
 			end
 			return UIDropDownMenu_AddButton(info);
 		end
