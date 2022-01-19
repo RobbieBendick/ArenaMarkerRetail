@@ -50,7 +50,7 @@ function Config:Toggle()
 	ArenaMarkerDropDown:SetShown(menu:IsShown());
 	ArenaMarkerDropDownTwo:SetShown(menu:IsShown());
 	ArenaMarkerDropDownThree:SetShown(menu:IsShown());
-	if ArenaMarkerDB.petDropDownThreeMarkerID == -1 then
+	if ArenaMarkerDB.petDropDownThreeMarkerID == -1 and ArenaMarkerDB.petDropDownTwoMarkerID == -1 then
 		UIConfig.dropDownTitleThree:Hide();
 		ArenaMarkerDropDownThree:Hide();
 		UIConfig:SetSize(180, 365);
@@ -138,8 +138,10 @@ function Config:CreateMenu()
 	end)
 
 	UIConfig.CloseButton:SetScript("OnClick", function ()
-		ArenaMarkerConfig:Hide()
-		ArenaMarkerDropDown:Hide()
+		UIConfig:Hide();
+		ArenaMarkerDropDown:Hide();
+		UIConfig.dropDownThree:Hide();
+		UIConfig.dropDownTwo:Hide();
 	end)
 
 	-- Options Title
@@ -196,6 +198,11 @@ function Config:CreateMenu()
 		local function AddMark(marker, boolean, i)
 			info.text, info.checked = marker, boolean
 			if i ~= nil then
+				if i == ArenaMarkerDB.petDropDownThreeMarkerID or i == ArenaMarkerDB.petDropDownTwoMarkerID then
+					info.disabled = true;
+				else 
+					info.disabled = false;
+				end
 				info.icon = core.texture_path..i;
 			else
 				info.icon = nil;
@@ -225,7 +232,6 @@ function Config:CreateMenu()
 	UIDropDownMenu_SetSelectedID(UIConfig.dropDown, ArenaMarkerDB.petDropDownClickID);
 	setDropdownIcon(ArenaMarkerDB.petDropDownMarkerID);
 
-
 	--Second Prio Pet
 	local function ArenaMarker_Pet_DropDown_Two_OnClick(self, arg1, arg2, checked)
 		local j = -1;
@@ -234,12 +240,12 @@ function Config:CreateMenu()
 				ArenaMarkerDB.petDropDownTwoMarkerID = j;
 				ArenaMarkerDB.petDropDownTwoClickID = self:GetID();
 				if i == 9 and ArenaMarkerDB.petDropDownThreeMarkerID == -1 then
-					UIConfig.dropDownTitleThree:Hide()
-					UIConfig.dropDownThree:Hide()
+					UIConfig.dropDownTitleThree:Hide();
+					UIConfig.dropDownThree:Hide();
 					UIConfig:SetSize(180, 370);
 				else
-					UIConfig.dropDownTitleThree:Show()
-					UIConfig.dropDownThree:Show()
+					UIConfig.dropDownTitleThree:Show();
+					UIConfig.dropDownThree:Show();
 					UIConfig:SetSize(180, 420);
 				end
 				break;
@@ -260,7 +266,7 @@ function Config:CreateMenu()
 		local function AddMark(marker, boolean, i)
 			info.text, info.checked = marker, boolean
 			if i ~= nil then
-				if i == ArenaMarkerDB.petDropDownThreeMarkerID then
+				if i == ArenaMarkerDB.petDropDownThreeMarkerID or i == ArenaMarkerDB.petDropDownMarkerID then
 					info.disabled = true;
 				else 
 					info.disabled = false;
@@ -296,13 +302,11 @@ function Config:CreateMenu()
 	UIDropDownMenu_SetSelectedID(UIConfig.dropDownTwo, ArenaMarkerDB.petDropDownTwoClickID);
 	setDropdownIconTwo(ArenaMarkerDB.petDropDownTwoMarkerID);
 
-
 	--Third Prio Pet
 	local function ArenaMarker_Pet_DropDown_Three_OnClick(self, arg1, arg2, checked)
 		local j = -1;
 		for i=#core.marker_strings + 1, 1, -1 do
 			if self:GetID() == i then
-				UIConfig.dropDownTitleThree:Show();
 				ArenaMarkerDB.petDropDownThreeMarkerID = j;
 				ArenaMarkerDB.petDropDownThreeClickID = self:GetID();
 				if i == 9 and ArenaMarkerDB.petDropDownTwoMarkerID == -1 then
@@ -332,7 +336,7 @@ function Config:CreateMenu()
 		local function AddMark(marker, boolean, i)
 			info.text, info.checked = marker, boolean
 			if i ~= nil then
-				if i == ArenaMarkerDB.petDropDownTwoMarkerID then
+				if i == ArenaMarkerDB.petDropDownTwoMarkerID or i == ArenaMarkerDB.petDropDownMarkerID then
 					info.disabled = true;
 				else 
 					info.disabled = false;
@@ -366,7 +370,6 @@ function Config:CreateMenu()
 	UIDropDownMenu_Initialize(UIConfig.dropDownThree, ArenaMarkerDropDownMenuThree);
 	UIDropDownMenu_SetSelectedID(UIConfig.dropDownThree, ArenaMarkerDB.petDropDownThreeClickID);
 	setDropdownIconThree(ArenaMarkerDB.petDropDownThreeMarkerID);
-
 	
 	UIConfig:Hide();
 	return UIConfig;
