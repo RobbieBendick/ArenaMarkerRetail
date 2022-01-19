@@ -327,6 +327,11 @@ function Config:CreateMenu()
 		local function AddMark(marker, boolean, i)
 			info.text, info.checked = marker, boolean
 			if i ~= nil then
+				if i == ArenaMarkerDB.petDropDownTwoMarkerID then
+					info.disabled = true;
+				else 
+					info.disabled = false;
+				end
 				info.icon = core.texture_path..i;
 			else
 				info.icon = nil;
