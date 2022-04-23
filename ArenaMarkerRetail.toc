@@ -1,5 +1,5 @@
 ## Interface: 90100
-## Author: Mageiden/Robdog
+## Author: Mageiden
 ## Title: ArenaMarker
 ## Notes: Gives your group class-based Raid Markers in arena.
 ## DefaultState: enabled
